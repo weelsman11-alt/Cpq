@@ -611,7 +611,7 @@ function vSaved(){
       <button class="btn sm quiet" data-act="push" data-id="${esc(x.id)}" ${PD&&x.dealId?'':`disabled title="${PD?'Add a deal ID to this quote first':'Pipedrive isn\'t connected yet'}"`}>Push to Pipedrive</button>
       <button class="btn sm quiet" data-act="open" data-id="${esc(x.id)}">Open</button>
       <button class="btn sm danger ${S.armed===x.id?'armed':''}" data-act="del" data-id="${esc(x.id)}">${S.armed===x.id?'Confirm delete':'Delete'}</button></div></td></tr>`).join('')||`<tr><td colspan="7" class="muted">No quotes match “${esc(S.search)}”.</td></tr>`}
-  </tbody></table></div><p class="pd-note" style="margin-top:12px"><span class="dot ${PD?'on':''}"></span>${PD?'Push to Pipedrive attaches the PDF to the deal, adds a note and sets the deal value to the turnkey total ex GST.':'Push to Pipedrive switches on once the Pipedrive connection is live.'}</p>`}`;
+  </tbody></table></div><p class="pd-note" style="margin-top:12px"><span class="dot ${PD?'on':''}"></span>${PD?(PD_VIA_MCP()?'Push to Pipedrive adds the quote to the deal as a note and sets the deal value to the turnkey total ex GST. Download the PDF to email it.':'Push to Pipedrive attaches the PDF to the deal, adds a note and sets the deal value to the turnkey total ex GST.'):'Push to Pipedrive switches on once the Pipedrive connection is live.'}</p>`}`;
 }
 
 /* ================= 4. price book ================= */
@@ -862,27 +862,67 @@ async function downloadPdf(q){
   catch(err){ if(err&&err.code==='declined') return; if(err&&err.code==='rate_limited') return toast('A download is already waiting for your OK.'); toast('Couldn’t create the PDF download here.'); }
 }
 
-/* ================= Pipedrive (enabled where the host provides /api/pipedrive) ================= */
-const PD = !!window.CPQ_PIPEDRIVE;
+/* ================= Pipedrive =================
+   Netlify: /api/pipedrive (window.CPQ_PIPEDRIVE). claude.ai: the viewer's Pipedrive connector through the mcp capability. */
+let PD = !!window.CPQ_PIPEDRIVE, MCP = null;
+const PD_VIA_MCP = () => !window.CPQ_PIPEDRIVE && !!MCP;
+function pdErr(e){
+  const c=e&&e.code;
+  if(c==='needs_reauth') return 'Pipedrive needs reconnecting. Reconnect it in claude.ai Settings → Connectors.';
+  if(c==='server_not_connected'||c==='selection_required') return 'Pipedrive isn’t connected for you. Add it in claude.ai Settings → Connectors.';
+  if(c==='not_in_manifest'||c==='approval_required'||c==='consent_required') return 'This page needs your OK to use Pipedrive. Try again and choose Allow.';
+  if(c==='blocked_by_policy') return 'Your organisation’s settings block this Pipedrive action.';
+  if(c==='server_unavailable') return 'Pipedrive didn’t respond. Wait a moment and try again.';
+  if(c==='tool_error') return 'Pipedrive said: '+String(e.message||'request failed').slice(0,160);
+  return (e&&e.message)||'Something went wrong talking to Pipedrive.';
+}
+async function pdTool(tool,input){ const r=await MCP.callTool('Pipedrive',tool,input,{cache:false}); const p=r.payload; if(p&&p.success===false) throw Object.assign(new Error(p.error||'Pipedrive refused the request'),{code:'tool_error'}); return (p&&p.data)!==undefined?p.data:p; }
+const pdId=v=>(v&&typeof v==='object'?v.value:v)||null;
+const pdPrimary=list=>(Array.isArray(list)?((list.find(x=>x&&x.primary)||list[0]||{}).value):'')||'';
+function pdAddress(a){ if(!a) return ''; if(typeof a==='string') return a; return a.formatted_address||a.value||[a.street_number,a.route,a.locality,a.admin_area_level_1,a.postal_code].filter(Boolean).join(' '); }
+async function pdLoad(id){
+  if(!PD_VIA_MCP()){ const r=await fetch('/api/pipedrive?deal='+encodeURIComponent(id)); const j=await r.json(); if(!r.ok) throw new Error(j.error||'Not found'); return j; }
+  const deal=await pdTool('getDeal',{id:+id});
+  const oid=pdId(deal.org_id), pid=pdId(deal.person_id);
+  const [org,person]=await Promise.all([oid?pdTool('getOrganization',{id:+oid}):null, pid?pdTool('getPerson',{id:+pid}):null]);
+  return { title:deal.title||'', company:(org&&org.name)||'', address:pdAddress(org&&org.address),
+    contact:(person&&person.name)||'', email:pdPrimary(person&&(person.emails||person.email)), phone:pdPrimary(person&&(person.phones||person.phone)) };
+}
+async function pdPush(q,note){
+  if(!PD_VIA_MCP()){
+    const blob=makePdf(q).output('blob'); const b64=await new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(String(fr.result).split(',')[1]); fr.onerror=rej; fr.readAsDataURL(blob); });
+    const r=await fetch('/api/pipedrive',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({dealId:q.dealId,filename:pdfName(q),pdfBase64:b64,note,value:q.ex})});
+    const j=await r.json(); if(!r.ok) throw new Error(j.error||'Push failed'); return {fileId:j.fileId||null, pdf:true};
+  }
+  await pdTool('addNote',{deal_id:+q.dealId, content:note});
+  await pdTool('updateDeal',{id:+q.dealId, value:Math.round(q.ex*100)/100, currency:'AUD'});
+  return {fileId:null, pdf:false};
+}
+function quoteNote(q){
+  const lines=[`<b>Quote ${esc(q.number)}</b> (${dmy(q.date)}, valid until ${dmy(q.expiry||addDaysISO(q.date,q.validDays))})`,
+    `${esc(q.model?q.model.title:'')}`, `Turnkey Build Total: <b>${money(q.ex)}</b> excl GST`];
+  if((q.options||[]).length) lines.push('Modules: '+q.options.map(o=>esc(o.name)+(o.qty>1?' x'+o.qty:'')).join(', '));
+  if((q.specials||[]).length) lines.push('Special requests: '+q.specials.map(o=>esc(o.name)).join(', '));
+  (q.finance||[]).forEach(f=>lines.push(`${esc(f.label)}: ${esc(f.headline)} ${esc(f.period)}`));
+  if(q.prep&&q.prep.name) lines.push('Prepared by '+esc(q.prep.name));
+  return lines.join('<br>');
+}
 async function loadDeal(){
-  const id=String(S.draft.dealId||'').trim(); if(!id){ $('#dealId').focus(); return toast('Enter the Pipedrive deal ID first.'); }
-  const b=$('#pd-load'); b.disabled=true;
-  try{ const r=await fetch('/api/pipedrive?deal='+encodeURIComponent(id)); const j=await r.json(); if(!r.ok) throw new Error(j.error||'Not found');
-    Object.assign(S.draft.client,{company:j.company||S.draft.client.company,contact:j.contact||'',email:j.email||'',phone:j.phone||'',address:j.address||''});
+  const id=String(S.draft.dealId||'').trim(); if(!/^\d+$/.test(id)){ $('#dealId').focus(); return toast('Enter the Pipedrive deal ID (numbers only).'); }
+  const b=$('#pd-load'); b.disabled=true; b.textContent='Loading…';
+  try{ const j=await pdLoad(id);
+    Object.assign(S.draft.client,{company:j.company||S.draft.client.company,contact:j.contact||S.draft.client.contact,email:j.email||S.draft.client.email,phone:j.phone||S.draft.client.phone,address:j.address||S.draft.client.address});
     persistDraft(); render(); toast(`Loaded ${j.company||j.title||'deal '+id}`); }
-  catch(e){ toast('Couldn\u2019t load that deal: '+e.message); } finally{ const n=$('#pd-load'); if(n) n.disabled=false; }
+  catch(e){ toast('Couldn’t load deal '+id+'. '+pdErr(e)); const n=$('#pd-load'); if(n){ n.disabled=false; n.textContent='Load client'; } }
 }
 async function pushToPipedrive(q, btn){
   if(!q.dealId) return toast('Add a Pipedrive deal ID to this quote first.');
   btn.disabled=true; btn.textContent='Pushing…';
   try{
-    const blob=makePdf(q).output('blob'); const b64=await new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(String(fr.result).split(',')[1]); fr.onerror=rej; fr.readAsDataURL(blob); });
-    const note=`Quote ${q.number} sent: ${q.model?q.model.title:''}. Turnkey build total ${money(q.ex)} excl GST.`+((q.finance||[]).length?` Ownership options: ${q.finance.map(f=>f.label+' '+f.headline+' '+f.period).join('; ')}.`:'');
-    const r=await fetch('/api/pipedrive',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({dealId:q.dealId,filename:pdfName(q),pdfBase64:b64,note,value:q.ex})});
-    const j=await r.json(); if(!r.ok) throw new Error(j.error||'Push failed');
-    await S.db.doc('quotes/'+q.id).update({pipedrive:{pushedAt:new Date().toISOString(),fileId:j.fileId||null}});
-    toast(`Quote ${q.number} added to deal #${q.dealId}`);
-  }catch(e){ toast('Couldn\u2019t push to Pipedrive: '+e.message); btn.disabled=false; btn.textContent='Push to Pipedrive'; }
+    const r=await pdPush(q, quoteNote(q));
+    await S.db.doc('quotes/'+q.id).update({pipedrive:{pushedAt:new Date().toISOString(),fileId:r.fileId,pdf:r.pdf}});
+    toast(r.pdf?`Quote ${q.number} and PDF added to deal #${q.dealId}`:`Quote ${q.number} added to deal #${q.dealId} as a note, and the deal value updated`);
+  }catch(e){ toast('Couldn’t push to Pipedrive. '+pdErr(e)); btn.disabled=false; btn.textContent='Push to Pipedrive'; }
 }
 
 /* ================= boot ================= */
@@ -892,6 +932,7 @@ render();
   const [db,user,downloads]=await Promise.all([claude.use('db'),claude.use('user'),claude.use('downloads')]);
   S.downloads=downloads;
   if(user){ try{ S.uid=await user.id(); const me=await user.me(); S.me=(me&&me.name)||''; if(S.me){ $('#who').textContent=S.me; if(!S.draft.prep.name){ S.draft.prep.name=S.me; } } }catch(e){} try{ S.canEditPB=!!user.canEdit(); }catch(e){} }
+  if(!window.CPQ_PIPEDRIVE) claude.use('mcp').then(m=>{ if(m){ MCP=m; PD=true; if(S.tab==='quote'||S.tab==='saved') keepFocus(render); } }).catch(()=>{});
   if(!db){ clearTimeout(timer); S.dbState='unavailable'; render(); return; }
   S.db=db;
   db.doc('config/pricebook').onSnapshot(snap=>{
