@@ -1,0 +1,344 @@
+{
+ "finance": {
+  "finlease": {
+   "advance": true,
+   "balloonPct": 20,
+   "depositPct": 0,
+   "rate": 8.5,
+   "term": 60
+  },
+  "oplease": {
+   "advance": true,
+   "maint": true,
+   "rate": 9,
+   "residualPct": 25,
+   "term": 60
+  },
+  "outright": {
+   "depositPct": 30,
+   "progressPct": 20
+  },
+  "r2o": {
+   "creditPct": 30,
+   "fu": 35,
+   "maxTerm": 12,
+   "minTerm": 6
+  },
+  "rental": {
+   "fu": 35,
+   "fu24": 30,
+   "fu36": 25,
+   "fuBase": 35,
+   "ratePct": 3.5,
+   "term": 12
+  }
+ },
+ "gstRate": 0.1,
+ "isExample": true,
+ "models": [
+  {
+   "base": 295000,
+   "chassis": "FUSO 515",
+   "code": "BT2-1",
+   "description": "Linelift 105AU on FUSO 515.",
+   "equipment": [
+    [
+     "Manufacturer",
+     "Linelift"
+    ],
+    [
+     "Model",
+     "105AU"
+    ]
+   ],
+   "id": "105au",
+   "inclusions": "",
+   "name": "Linelift 105AU",
+   "title": "Linelift 105AU on a FUSO 515",
+   "turnkey": "Complete turn-key build including testing, certifications, delivery and on-site operator training",
+   "vehicle": [
+    [
+     "Manufacturer",
+     "Fuso"
+    ],
+    [
+     "Model",
+     "515"
+    ],
+    [
+     "On Road Costs",
+     "Included"
+    ],
+    [
+     "Stamp Duty",
+     "Excluded"
+    ]
+   ]
+  },
+  {
+   "base": 325000,
+   "chassis": "",
+   "code": "",
+   "description": "Linelift 105X.",
+   "equipment": [
+    [
+     "Manufacturer",
+     "Linelift"
+    ],
+    [
+     "Model",
+     "105X"
+    ]
+   ],
+   "id": "105x",
+   "inclusions": "",
+   "name": "Linelift 105X",
+   "title": "Linelift 105X",
+   "turnkey": "Complete turn-key build including testing, certifications, delivery and on-site operator training",
+   "vehicle": [
+    [
+     "On Road Costs",
+     "Included"
+    ],
+    [
+     "Stamp Duty",
+     "Excluded"
+    ]
+   ]
+  },
+  {
+   "base": 426316,
+   "chassis": "FUSO Fighter 1124 4x2",
+   "code": "BTE3-1",
+   "description": "Versalift VST40 on FUSO Fighter 1124: 11 t GVM, Allison auto.",
+   "equipment": [
+    [
+     "Manufacturer",
+     "Versalift"
+    ],
+    [
+     "Model",
+     "VST40"
+    ],
+    [
+     "Working height",
+     "14.2m"
+    ],
+    [
+     "Platform height (ground to bucket floor)",
+     "12.2m"
+    ],
+    [
+     "Working radius",
+     "9.5m"
+    ],
+    [
+     "Bucket capacity (SWL)",
+     "227kg (two-person)"
+    ],
+    [
+     "Boom style",
+     "Articulating / Telescopic"
+    ],
+    [
+     "Insulation",
+     "Fully insulated"
+    ],
+    [
+     "Outriggers",
+     "4, with interlock system"
+    ]
+   ],
+   "id": "vst40",
+   "inclusions": "Stone guarding, sun visor, seat covers, floor mats & reversing camera",
+   "name": "Versalift VST40",
+   "title": "Versalift VST40 on a Fuso Fighter 1124",
+   "turnkey": "Complete turn-key build including testing, certifications, delivery and on-site operator training",
+   "vehicle": [
+    [
+     "Manufacturer",
+     "Fuso"
+    ],
+    [
+     "Model",
+     "Fighter 1124 4x2 (steel suspension)"
+    ],
+    [
+     "Transmission",
+     "Allison 5-speed automatic"
+    ],
+    [
+     "On Road Costs",
+     "Included"
+    ],
+    [
+     "Stamp Duty",
+     "Excluded"
+    ]
+   ]
+  },
+  {
+   "base": 531000,
+   "chassis": "FUSO Fighter 1627 4x2",
+   "code": "BTE3-2",
+   "description": "Versalift VST5000 on FUSO Fighter 1627: 16 t GVM, Allison auto.",
+   "equipment": [
+    [
+     "Manufacturer",
+     "Versalift"
+    ],
+    [
+     "Model",
+     "VST5000"
+    ],
+    [
+     "Working height",
+     "17.5m"
+    ],
+    [
+     "Working radius",
+     "11.2m"
+    ]
+   ],
+   "id": "vst5000",
+   "inclusions": "Stone guarding, sun visor, seat covers, floor mats & reversing camera",
+   "name": "Versalift VST5000",
+   "title": "Versalift VST5000 on a Fuso Fighter 1627",
+   "turnkey": "Complete turn-key build including testing, certifications, delivery and on-site operator training",
+   "vehicle": [
+    [
+     "Manufacturer",
+     "Fuso"
+    ],
+    [
+     "Model",
+     "Fighter 1627 4x2"
+    ],
+    [
+     "Transmission",
+     "Allison 6-speed automatic"
+    ],
+    [
+     "On Road Costs",
+     "Included"
+    ],
+    [
+     "Stamp Duty",
+     "Excluded"
+    ]
+   ]
+  }
+ ],
+ "options": [
+  {
+   "category": "Accessories",
+   "id": "cab-cage",
+   "models": [],
+   "name": "Cab cage",
+   "price": 0,
+   "qty": 1
+  },
+  {
+   "category": "Accessories",
+   "id": "earthchain",
+   "models": [],
+   "name": "Earthchain 1.5mm 16mm",
+   "price": 0,
+   "qty": 1
+  },
+  {
+   "category": "Accessories",
+   "id": "water-25",
+   "models": [],
+   "name": "25L water tank",
+   "price": 0,
+   "qty": 1
+  },
+  {
+   "category": "Accessories",
+   "id": "cdd",
+   "models": [],
+   "name": "Controlled descent devices (CDD) – one per operator",
+   "price": 0,
+   "qty": 2
+  },
+  {
+   "category": "Tool Boxes (inc. 1x shelf per box)",
+   "id": "tb-600",
+   "models": [],
+   "name": "600H x 600W x 600D (above deck)",
+   "price": 0,
+   "qty": 2
+  },
+  {
+   "category": "Hydraulic",
+   "id": "qrc",
+   "models": [],
+   "name": "QRC tool port fittings at bucket",
+   "price": 0,
+   "qty": 1
+  },
+  {
+   "category": "Holders And Trays",
+   "id": "cone",
+   "models": [],
+   "name": "Cone holder - underdeck",
+   "price": 0,
+   "qty": 2
+  },
+  {
+   "category": "Holders And Trays",
+   "id": "vice",
+   "models": [],
+   "name": "Daly 4\" vice complete with SS telescopic mount",
+   "price": 0,
+   "qty": 1
+  },
+  {
+   "category": "Holders And Trays",
+   "id": "sign-cage",
+   "models": [],
+   "name": "Sign cage",
+   "price": 0,
+   "qty": 1
+  },
+  {
+   "category": "Compliance & Delivery",
+   "id": "delivery",
+   "models": [],
+   "name": "Delivery",
+   "price": 0,
+   "qty": 1
+  },
+  {
+   "category": "Compliance & Delivery",
+   "id": "training",
+   "models": [],
+   "name": "Training",
+   "price": 0,
+   "qty": 1
+  },
+  {
+   "category": "Compliance & Delivery",
+   "id": "logbook",
+   "models": [],
+   "name": "Logbook with pouch",
+   "price": 0,
+   "qty": 1
+  }
+ ],
+ "text": {
+  "acceptance": "To accept this quotation please complete below. By signing this quotation and initialling each page, you acknowledge you have read and accepted Waimea Group AU Pty Ltd terms of trade.",
+  "availability": "This quote is based on a stock build from the Waimea Production Planner. At time of quoting the estimated completion date for this equipment is {completion}. Note that this equipment may also be offered to other customers and is available on a first in first served basis.",
+  "conditions": "Prices stated in this quotation exclude GST.\n\nAll information in this quotation supersedes any previous quotations or estimates.\n\nAll overdue accounts are liable for interest and collection costs incurred.\n\nOwnership of any goods supplied remain with Waimea Group AU Pty Ltd until payment is made in full. Full terms of trade can be found at rear of this quotation and online at https://waimea.net.au/terms-and-conditions.",
+  "finlease": "Spread the cost of ownership over {term} months with a fixed monthly payment and a balloon at the end of the term, after which ownership passes to you. Finance is provided through Waimea's finance partner and is subject to credit approval.",
+  "notes": "Our goal is to deliver this turn-key build as a 'work ready' unit, so compliance/testing, certifications, delivery and on-site machine specific operator training is included in the quoted price.",
+  "oplease": "A fixed monthly cost over {term} months with the asset kept off your balance sheet. The unit is returned to Waimea at the end of the term, so there is no residual value risk to you.",
+  "r2o": "The 'Rent to Own' option enables you to take delivery of this vehicle on a fully maintained rental, without committing any capital, with the option to roll it into a purchase if it works out to be the right vehicle for your application.\n\nThe terms are a minimum of {min} months rental, and you have the first right to purchase it outright at any point between {min} and {max} months, for the above quoted price less {credit}% of any rental paid. Should a purchase not proceed, the rental term continues for the full {max} months.",
+  "rental": "A fully maintained rental with no capital outlay, for a minimum term of {term} months. The unit remains the property of Waimea Group and is supported by our service team for the full term.",
+  "support": "WHY CHOOSE WAIMEA?\nWe understand the investment you are making in specialist utility equipment, and we understand the cost of downtime and poor performing equipment – your equipment is your key asset and must be delivering a return on investment. Our vision is that the utilities industry should be operating with zero vehicle downtime.\n\nSpecialist equipment built by Waimea has been designed to deliver optimum performance throughout its lifecycle and along with our eco-system of support services, whether you are investing capital on purchase or needing short term project support with specialist equipment, our business model can support your operational needs.\n\nOUR CUSTOMER CARE PROMISE TO YOU:\n• Our products are designed to be functional, efficient and add value to your business.\n• Listen to your ideas and strive to accommodate any special requirements.\n• We will be honest and act with integrity in everything we do for you.\n• We will endeavour to meet your deadlines and will communicate closely with you if anything changes.\n• Our quotes will be easy to read and will not have any hidden costs. Any optional or module extras will be clearly explained.\n• Our sales contracts will fully explain the products and services provided and the invoices will accurately reflect the signed contract.\n• We will acknowledge any communication from you within 24 working day hours.\n\nCOMPREHENSIVE TRAINING\nWe provide free one-on-one operator training and with some models an additional machine specific training video so you can quickly and efficiently induct new operators.\n\nPRODUCT SUPPORT\nIf there are any issues, our technical team are always available to assist with fault finding and can often provide a prompt solution. When needed, we draw on the support of our nationwide network of service providers who know our products and are experienced in carrying out servicing and repairs. Full back up service is supplied by our factory trained technician for the duration of the warranty period.\n\nSPARE PARTS\nWe can offer an extensive range of spare parts at our workshop, and we strive to deliver the spare part within 48 working day hours whenever possible.\n\nSERVICE AND REPAIRS\nWe offer comprehensive on-site routine inspections for your machine by a factory trained technician to ensure that you are always getting the best performance.\n\nCERTIFICATES\nYour truck will have been tested for and passed all requirements for relevant certification, and you will be given a copy of the certificates when the unit is delivered.",
+  "terms": "# 1. GENERAL\n## 1.1. INTERPRETATION & DEFINITIONS\n1.1.1. Reference in these trading terms to:-\n(a) \"ACL\" means the Australian Consumer Law as set out in Schedule 2 of the Competition and Consumer Act 2010 (Cth).\n(b) \"Goods\" or \"Services\" refers to goods or services supplied by Waimea to You whether by way of sale.\n(c) \"Waimea\" means Waimea Group AU Pty Ltd and its successors and assigns.\n(d) \"PPSA\" means the Personal Property Securities Act 2009 (Cth) and includes any relevant Regulations.\n(e) \"Product Information\" means information relating to Goods as appearing on waimea.net.au or as otherwise provided by Waimea to You.\n(f) \"Purchase Order\" means a document setting out particular Goods or Services proposed to be provided to You by Waimea.\n(g) \"You\" means the person named in a Customer Account Application or Purchase Order as the Customer.\n1.1.2. Terms used in these trading terms which have defined meanings in the PPSA or ACL have the same meanings in these trading terms.\n## 1.2. PRICE\n1.2.1. The \"price\" of Goods and/or Services will be the then current price as determined by Waimea and notified to You.\n1.2.2. All prices are GST exclusive. GST is payable by You in addition to the price at the same time as the price is payable.\n## 1.3. LIABILITY\n1.3.1. Where You comprise more than one person, each such person shall be jointly and severally liable to Waimea under these trading terms.\n## 1.4. PAYMENT\n1.4.1. The price shall be paid by You in cash or by cheque not later than the time or times specified in any applicable Purchase Order. Time is of the essence in that regard.\n1.4.2. If You fail to make any payment when due all other amounts whether then due or not will become immediately due and payable.\n1.4.3. Waimea reserves the right to recover from You a default charge on overdue amounts calculated on a daily basis at the rate which is of 4% above the Westpac Reference Lending Rate as published from time to time upon the outstanding balance of the price and to be payable by way of liquidated damages for breach of contract.\n1.4.4. You must pay all costs and expenses (on a solicitor-client basis) reasonably incurred by Waimea arising out of any breach by You of these trading terms.\n## 1.5. SUPPLY\n1.5.1. Every endeavour will be made by Waimea to supply the Goods and/or Services within the period, if any, requested by You but no liability is accepted by Waimea for delay in delivery or non-delivery.\n1.5.2. Waimea reserves the right at its discretion to discontinue supply to You at any time.\n## 1.6. EXAMINATION & RETURNS\n1.6.1. You are responsible for examination of the Goods upon delivery or collection. Any alleged damage, deficiency or non-conformity with order must be reported as soon as reasonably possible and You must allow Waimea to inspect the Goods as soon as practical.\n1.6.2. Goods which are not subject to defect or non-conformity with order will not ordinarily be accepted for return but should Waimea elect (at its discretion) to accept a return you will be notified of any applicable restocking, handling, freight or other charges that will apply.\n## 1.7. PPSA\n1.7.1. You hereby grant to Waimea a Security Interest in all present and after acquired Goods and their proceeds (including any accounts and accessions) to secure all monies owing to Waimea now and/or in the future by You. Any agreement arising from a Purchase Order is a security agreement for the purposes of the PPSA with the collateral being the items referred to in any applicable Purchase Order.\n1.7.2. You agree that:\n(a) Waimea will continue to hold a Security Interest in the Goods in accordance with the PPSA, notwithstanding that the Goods may be processed, commingled or become an accession with other Goods;\n(b) You will do all the things necessary to enable Waimea to perfect and maintain its security interest including providing all information Waimea requires to\n(c) register a Financing Statement or Financing Change Statement on the Personal Properties Securities Register (\"PPSR\") as a Security Interest and a Purchase Money Security Interest pursuant to the PPSA;\n(d) You will not change your name, ACN or ABN or other details required on the PPSR, without first notifying Waimea;\n(e) Waimea need not give You any notice required under the PPSA unless the requirement to give notice cannot be excluded; You must pay any and all costs, expenses and other charges incurred, expended or payable by Waimea in relation to the filing, discharge or necessary amendment of any Financing Statement or Financing Change Statement;\n(f) You must pay all costs, expenses and other charges incurred by Waimea in relation to the filing, discharge or amendment of any Financing Statement or Financing Change Statement;\n(g) You will not allow security interests to be created or registered over the Goods in priority to the security interest(s) held by Waimea; and\n(h) To the extent the law permits them to be excluded sections 95, 118, 121(4), 125, 130, 132(3)(d), 132(4), 135, 142 and 143 of the PPSA shall not apply.\n## 1.8. CONSUMER GUARANTEES\n1.8.1. If Goods and/or Services are supplied to You as a Consumer, the ACL provides for You to have the benefit of consumer guarantees which cannot be excluded. You will be entitled to a replacement or refund for a major failure and for compensation for any other reasonably foreseeable loss or damage. You will also be entitled to have goods and/or services repaired, replaced or re-supplied if they fail to be of acceptable quality and the failure does not amount to a major failure.\n1.8.2. To the extent permissible by law, where the ACL applies and Goods and/or Services are not of a kind ordinarily acquired for personal, domestic or household use, the liability of Waimea in respect of a breach of a consumer guarantee or any warranty made under these trading terms is limited at the option of Waimea: In the case of Goods to -\n(a) replacing Goods or the supply of equivalent Goods;\n(b) the repair of the Goods;\n(c) the payment of the cost of replacing Goods or of acquiring equivalent Goods; or (d) the payment of the cost of having Goods repaired.\n(i) In the case of Services to -\n(d) the supplying of the Services again; or\n(e) the payment of the cost of having the Services supplied again.\n1.8.3. To the extent permitted by law, all other warranties whether implied or otherwise, not set out in these trading terms are excluded and Waimea is not liable in contract, tort (including, without limitation, negligence or breach of statutory duty) or otherwise to compensate You for:\n(a) any increased costs or expenses;\n(b) any loss of profit, revenue, business, contracts or anticipated savings;\n(c) any loss or expense resulting from a claim by a third party; or\n(d) any special, indirect or consequential loss or damage of any nature whatsoever;\narising out of Waimea's supply of Goods and/or services to You or caused by Waimea's failure to provide or delay in providing Goods and/or Services or any failure of Goods.\n## 1.9. REVIEW, SEVERANCE & APPLICABLE LAW\n1.9.1. Waimea reserves the right to review and update these trading terms from time to time. You will be notified of any change by facsimile or email and such revised trading terms will apply to all Goods or Services ordered by You after such notification.\n1.9.2. If any provision of these trading terms is invalid or unenforceable for any reason, that Term or Condition will be severed and will not effect the legality or enforceability of the remaining trading terms.\n1.9.3. The laws in force in New South Wales are applicable to all transactions relevant to these trading terms and each party submits to the exclusive jurisdiction of the courts of New South Wales.\n# 2. SALES & SERVICE\n## 2.1. TITLE AND TRANSFER\n2.1.1. Title in Goods shall remain with Waimea until You have paid all monies due to Waimea on any account whatsoever. Until that time You must-\n(a) at all times ensure that Goods are marked in a way that will enable their identification as property of Waimea;\n(b) except as mentioned in clause 2.1.2 not purport to mortgage, charge, transfer, convey or otherwise deal with Goods without the prior consent of Waimea;\n(c) at all times allow Waimea access to Goods to inspect them and to re-take possession at its discretion and indemnify Waimea against all claims whatsoever (including claims of trespass) arising out of the exercise or purported exercise of rights under this clause;\n(d) insure Goods; and\n(e) account to Waimea for all proceeds of Goods including any insurance proceeds.\n2.1.2. You shall be entitled to sell or consume Goods in the ordinary course of your business subject to –\n(a) in the case of a sale of Goods You must hold the proceeds of sale on trust for Waimea;\n(b) Your right to deal with Goods shall cease automatically if You-\n(i) breach any provision of these conditions of sale;\n(ii) cease to or threaten to cease to carry on your business; or\n(iii) becomes the subject of any form of insolvency administration whether formal or informal.",
+  "validity": "Quoted prices valid for {days} days from date of quote. The validity of this quotation expires on {expiry} after which a revision will be required to update with supply chain cost changes and exchange rate movement. Acceptance is acknowledged upon receipt of a signed sales contract and payment of the agreed deposit.",
+  "warranty": "Chassis Warranty\nThe chassis of each vehicle is covered by the original manufacturer's warranty as supplied by the truck dealer. Waimea provides no additional warranty on the chassis beyond that which is offered by the truck manufacturer.\n\nWaimea Warranty – Parts, Labour, and Mechanics\nWaimea warrants that all specialist superstructure components supplied and/or installed by us, including electronic systems, parts, and labour, will be free from defects in materials and workmanship under normal use and service for a period of 12 months from the date of delivery to the customer.\n\nThis 12-month warranty is conditional upon Waimea having carried out all scheduled servicing of the specialist superstructure in accordance with the manufacturer's recommended service intervals, and Waimea being provided with reasonable access to the vehicle during normal business hours (Monday - Friday, excluding public holidays).\n\nExclusions and Limitations\nThis warranty does not cover:\n• Normal wear and tear, or damage caused by misuse, neglect, accidents, improper operation, or unauthorised modifications or repairs.\n• Any failure or defect arising from non-compliance with service schedules or failure to provide access to Waimea for servicing or inspection.\n• Components not supplied or installed by Waimea.\n• Failures caused by external factors such as environmental conditions, improper storage, or operation outside of specified design parameters.\n\nRemedy\nDuring the warranty period, Waimea will, at its discretion, repair or replace defective parts or remedy faulty workmanship. All warranty work must be carried out or expressly authorised by Waimea in writing to remain valid."
+ }
+}
