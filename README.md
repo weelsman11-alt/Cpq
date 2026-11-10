@@ -23,6 +23,8 @@ This is the same app as the claude.ai version, with the claude.ai-only parts swa
 | Name | Required | What it is |
 |---|---|---|
 | `PIPEDRIVE_API_TOKEN` | Yes, for Pipedrive | Pipedrive > profile menu > Personal preferences > API. Use a token from a user who can see the Australian deals. |
+| `PIPEDRIVE_PUSH_API_TOKEN` | Recommended | Albert Field's own Pipedrive API token. Push to Pipedrive uses it so the PDF, note and deal update show as Albert Field. |
+| `PIPEDRIVE_AUTHOR_EMAIL` | No | Pipedrive user the pushed note is credited to. Defaults to `albert.field@waimea.co.nz`. |
 | `ADMIN_KEY` | Recommended | Any long password. Needed to save price book changes. |
 | `UPDATE_DEAL_VALUE` | No | Set to `false` to stop Push to Pipedrive changing the deal value. |
 
