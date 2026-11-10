@@ -182,6 +182,12 @@ table.pb input,table.pb select{padding:7px 8px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#1462AC">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Waimea CPQ">
 </head>
 <body>
 <header class="app">
@@ -894,5 +900,6 @@ render();
   db.collection('quotes').orderBy('createdAt','desc').onSnapshot(snap=>{ S.quotes=snap.docs.map(d=>Object.assign({id:d.id},d.data())); $('#qcount').textContent=S.quotes.length; if(S.tab==='saved') render(); },()=>{});
 })();
 </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}</script>
 </body>
 </html>
