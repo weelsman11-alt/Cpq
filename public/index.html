@@ -282,15 +282,17 @@ const S = {
   dbState:'loading', pb:null, pbEdit:null, quotes:[], draft:null, editingId:null, armed:null, search:''
 };
 function todayISO(){ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+const DEFAULT_PREP={name:'Albert Field',phone:'+61481482891',email:'albert.field@waimea.co.nz'};
 function blankDraft(){
   return { modelId:null, base:null, optionIds:[], qty:{}, discount:0, dealId:'', number:'',
     client:{company:'',contact:'',email:'',phone:'',address:''},
-    prep:{name:'',phone:'',email:''}, finance:{}, specials:[], showPrices:false,
+    prep:Object.assign({},DEFAULT_PREP), finance:{}, specials:[], showPrices:false,
     validDays:30, completion:'', notes:'', date:todayISO() };
 }
 S.draft = blankDraft();
 try{ const saved=JSON.parse(localStorage.getItem('cpq-draft2')||'null'); if(saved && saved.client){ S.draft=Object.assign(blankDraft(),saved); S.editingId=saved._editingId||null; } }catch(e){}
 try{ const p=JSON.parse(localStorage.getItem('cpq-prep')||'null'); if(p && !S.draft.prep.name) S.draft.prep=Object.assign(S.draft.prep,p); }catch(e){}
+S.draft.prep=S.draft.prep||{}; if(S.draft.prep.phone==='0481482891') S.draft.prep.phone=DEFAULT_PREP.phone; for(const k in DEFAULT_PREP){ if(!String(S.draft.prep[k]||'').trim()) S.draft.prep[k]=DEFAULT_PREP[k]; }
 function persistDraft(){ try{ localStorage.setItem('cpq-draft2',JSON.stringify(Object.assign({},S.draft,{_editingId:S.editingId}))); localStorage.setItem('cpq-prep',JSON.stringify(S.draft.prep)); }catch(e){} }
 
 /* ================= formatting ================= */
