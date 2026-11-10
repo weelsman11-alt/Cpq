@@ -283,7 +283,7 @@ const S = {
 };
 function todayISO(){ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
 function blankDraft(){
-  return { modelId:null, optionIds:[], qty:{}, discount:0, dealId:'', number:'',
+  return { modelId:null, base:null, optionIds:[], qty:{}, discount:0, dealId:'', number:'',
     client:{company:'',contact:'',email:'',phone:'',address:''},
     prep:{name:'',phone:'',email:''}, finance:{}, specials:[], showPrices:false,
     validDays:30, completion:'', notes:'', date:todayISO() };
@@ -378,7 +378,7 @@ function calcDraft(){
   const m=modelById(S.draft.modelId);
   const opts=m?optionsFor(m.id).filter(o=>S.draft.optionIds.includes(o.id)).map(o=>({id:o.id,name:o.name,category:o.category||'Accessories',price:+o.price||0,qty:qtyOf(o)})):[];
   const specials=(S.draft.specials||[]).filter(x=>String(x.desc||'').trim()).map(x=>({name:x.desc,qty:Math.max(1,+x.qty||1),price:+x.price||0}));
-  const base=m?+m.base||0:0;
+  const ov=S.draft.base, base=m?(ov!=null&&ov!==''?+ov||0:+m.base||0):0;
   const optTotal=opts.reduce((a,o)=>a+o.price*o.qty,0), spTotal=specials.reduce((a,o)=>a+o.price*o.qty,0);
   const subtotal=base+optTotal+spTotal, discount=Math.max(0,+S.draft.discount||0), ex=subtotal-discount, rate=gstRate();
   return {model:m||null,options:opts,specials,base,optTotal,spTotal,subtotal,discount,ex,gst:Math.round(ex*rate*100)/100,total:ex+Math.round(ex*rate*100)/100,rate};
@@ -463,7 +463,9 @@ function vRail(){
   const t=calcDraft();
   if(!t.model) return `<div class="head"><div class="k">Build</div><div class="v">No model selected</div></div><div class="body muted small">Choose a model to start pricing.</div>`;
   return `<div class="head"><div class="k">Build</div><div class="v">${esc(t.model.name)}</div></div><div class="body">
-    <div class="lines"><div class="row small"><span>Base build</span><span class="num">${money0(t.base)}</span></div>
+    <div class="field"><label for="base-price">Base build (ex GST)</label><input type="number" id="base-price" min="0" step="100" value="${esc(S.draft.base!=null?S.draft.base:(+t.model.base||0))}">
+      ${S.draft.base!=null&&t.base!==(+t.model.base||0)?`<span class="small muted">Price book: ${money0(t.model.base)} · <button type="button" class="btn ghost" id="base-reset" style="padding:0;min-height:0;font-size:inherit">Reset</button></span>`:''}</div>
+    <div class="lines">
     ${t.options.map(o=>`<div class="row small"><span>${esc(o.name)}${o.qty>1?' × '+o.qty:''}</span><span class="num">${money0(o.price*o.qty)}</span></div>`).join('')}
     ${t.specials.map(o=>`<div class="row small"><span>${esc(o.name)}${o.qty>1?' × '+o.qty:''}</span><span class="num">${money0(o.price*o.qty)}</span></div>`).join('')}</div>
     <div class="row sub"><span>Modules (${t.options.length+t.specials.length})</span><span class="num">${money0(t.optTotal+t.spTotal)}</span></div>
@@ -657,7 +659,7 @@ const slug=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-
 /* ================= events ================= */
 document.addEventListener('click',async e=>{
   const mb=e.target.closest('[data-model]');
-  if(mb){ if(S.draft.modelId!==mb.dataset.model){ S.draft.modelId=mb.dataset.model; S.draft.optionIds=[]; S.draft.qty={}; } persistDraft(); render(); return; }
+  if(mb){ if(S.draft.modelId!==mb.dataset.model){ S.draft.modelId=mb.dataset.model; S.draft.base=null; S.draft.optionIds=[]; S.draft.qty={}; } persistDraft(); render(); return; }
   const act=e.target.closest('[data-act]');
   if(act){ const q=S.quotes.find(x=>x.id===act.dataset.id); if(!q) return;
     if(act.dataset.act==='pdf') return downloadPdf(q);
@@ -666,6 +668,7 @@ document.addEventListener('click',async e=>{
     if(act.dataset.act==='del'){ if(S.armed===q.id){ S.armed=null; try{ await S.db.doc('quotes/'+q.id).delete(); toast(`Deleted quote ${q.number}`);}catch(err){ toast(writeErr(err)); } } else { S.armed=q.id; render(); } return; } }
   if(S.armed&&!e.target.closest('[data-act]')){ S.armed=null; if(S.tab==='saved') render(); }
   const id=e.target.id;
+  if(id==='base-reset'){ S.draft.base=null; persistDraft(); $('#rail').innerHTML=vRail(); return; }
   if(id==='btn-save') return saveQuote();
   if(id==='btn-pdf-draft') return downloadPdf(buildQuote());
   if(id==='btn-new') return newQuote();
@@ -692,6 +695,7 @@ document.addEventListener('change',e=>{
 function keepFocus(fn){ const a=document.activeElement, id=a&&a.id, pos=a&&a.selectionStart; fn(); if(id){ const n=document.getElementById(id); if(n){ n.focus(); try{ n.setSelectionRange(pos,pos); }catch(_){} } } }
 document.addEventListener('input',e=>{
   const t=e.target;
+  if(t.id==='base-price'){ S.draft.base=t.value; persistDraft(); keepFocus(()=>$('#rail').innerHTML=vRail()); return; }
   if(t.id==='discount'){ S.draft.discount=+t.value||0; persistDraft(); keepFocus(()=>$('#rail').innerHTML=vRail()); return; }
   if(t.dataset.qty){ S.draft.qty[t.dataset.qty]=t.value; persistDraft(); keepFocus(()=>$('#rail').innerHTML=vRail()); return; }
   if(t.dataset.c){ S.draft.client[t.dataset.c]=t.value; persistDraft(); renderPaper(); return; }
@@ -716,7 +720,7 @@ function newQuote(){ const prep=Object.assign({},S.draft.prep); S.draft=blankDra
 function openQuote(q){
   S.editingId=q.id;
   const qty={}; (q.options||[]).forEach(o=>qty[o.id]=o.qty||1);
-  S.draft=Object.assign(blankDraft(),{modelId:q.model&&q.model.id, optionIds:(q.options||[]).map(o=>o.id), qty, discount:q.discount||0,
+  S.draft=Object.assign(blankDraft(),{modelId:q.model&&q.model.id, base:q.model&&q.model.base!=null?q.model.base:null, optionIds:(q.options||[]).map(o=>o.id), qty, discount:q.discount||0,
     dealId:q.dealId||'', number:q.number||'', client:Object.assign(blankDraft().client,q.client||{}), prep:Object.assign(blankDraft().prep,q.prep||{}),
     finance:Object.fromEntries((q.finance||[]).map(f=>[f.id,Object.assign({},f.config,{on:true})])),
     specials:(q.specials||[]).map(x=>({desc:x.name,qty:x.qty,price:x.price})), showPrices:!!q.showPrices,
