@@ -849,8 +849,7 @@ function makePdf(q){
   }
 
   const n=doc.getNumberOfPages();
-  for(let i=1;i<=n;i++){ doc.setPage(i); font('normal',9.5,INK); doc.text('Initials___',W-M-26,H-14);
-    if(q.example){ font('bold',8.5,[179,38,30]); doc.text('EXAMPLE PRICING - NOT FOR CUSTOMER USE',W/2,6,{align:'center'}); } }
+  for(let i=1;i<=n;i++){ doc.setPage(i); font('normal',9.5,INK); doc.text('Initials___',W-M-26,H-14); }
   return doc;
 }
 function pdfName(q){ const d=dmy(q.date).replace(/\//g,'-'); return `${(q.client&&q.client.company)||'Customer'} - ${q.model?q.model.title:'Quote'} From Waimea Group ${d}`.replace(/[\\/:*?"<>|]+/g,'').replace(/\s+/g,' ').trim()+'.pdf'; }
